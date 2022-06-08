@@ -40,4 +40,5 @@ jobs:
           docker buildx build --push \
           --tag $IMAGE_ID:$VERSION \
           --build-arg CHECKOUT=${{ github.ref }} \
+          --build-arg VERSION=$VERSION \
           --platform linux/amd64 .

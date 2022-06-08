@@ -1,8 +1,10 @@
 ARG CHECKOUT=main
+ARG VERSION=devbuild
 
 # Node / React container
 FROM node:16.14.2-alpine3.15 AS JS_BUILD
 ARG CHECKOUT
+ARG VERSION
 
 RUN apk fix && \
     apk --no-cache --update add git
@@ -20,6 +22,7 @@ RUN npm run build
 # Go container
 FROM golang:1.18.2-alpine3.15 AS GO_BUILD
 ARG CHECKOUT
+ARG VERSION
 
 RUN apk fix && \
     apk --no-cache --update add git
@@ -31,7 +34,7 @@ RUN git clone https://github.com/CloudGoBrrr/backend.git /build/backend \
 
 WORKDIR /build/backend
 
-RUN go build -ldflags="-X 'cloudgobrrr/backend/pkg/env.version=$CHECKOUT'" -o backend-server main.go
+RUN go build -ldflags="-X 'cloudgobrrr/backend/pkg/env.version=$VERSION'" -o backend-server main.go
 
 # --
 # Final Container
